@@ -1,1 +1,1 @@
-# weater-widget-vue-3
+# weather-widget-vue-3
