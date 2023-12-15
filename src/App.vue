@@ -4,16 +4,16 @@ import { API_KEY, BASE_URL } from '@/constants'
 import WeatherSummery from '@/components/WeatherSummery.vue'
 import Highlights from '@/components/Highlights.vue'
 
-const city = ref('Paris')
+const city = ref('Paris') // реактивность перерендование компанента
 const weatherInfo = ref(null)
 
 function getWeather() {
-  fetch(`${BASE_URL}?q=${city.value}&appid=${API_KEY}`)
+  fetch(`${BASE_URL}?q=${city.value}&units=metric&appid=${API_KEY}`) // return promise
     .then((response) => response.json())
     .then((data) => (weatherInfo.value = data))
 }
 
-onMounted(getWeather)
+onMounted(getWeather) // при загрузке/монтировании комп-та на страницу, вызвать эту функцию.
 </script>
 
 <template>
@@ -27,7 +27,7 @@ onMounted(getWeather)
                 <div class="city-inner">
                   <input v-model="city" type="text" class="search" @keyup.enter="getWeather" />
                 </div>
-                <WeatherSummery />
+                <WeatherSummery :weatherInfo="weatherInfo" />
               </div>
             </section>
             <section class="section section-right">

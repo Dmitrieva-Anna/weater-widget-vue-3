@@ -1,17 +1,37 @@
-<script setup></script>
+<script setup>
+defineProps({
+  weatherInfo: {
+    type: [Object, null],
+    required: true
+  }
+})
+
+const today = new Date().toLocaleString('en-EN', {
+  weekday: 'short',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+})
+</script>
 
 <template>
-  <div class="summary">
+  <div v-if="weatherInfo?.weather" class="summary">
     <div
-      style="background-image: url('src/assets/img/weather-main/thunderstorm.png')"
+      :style="`background-image: url('https://openweathermap.org/img/wn/${weatherInfo?.weather[0].icon}@2x.png')`"
       class="pic-main"
     ></div>
     <div class="weather">
-      <div class="temp">14 °C</div>
-      <div class="weather-desc text-block">Thunderstorm</div>
+      <div class="temp">{{ Math.round(weatherInfo?.main?.temp) }} °C</div>
+      <div class="weather-desc">
+        <div
+          :style="`background-image: url('https://openweathermap.org/img/wn/${weatherInfo?.weather[0].icon}@2x.png')`"
+          class="weather-desc-img"
+        ></div>
+        <div class="desc text-block">{{ weatherInfo?.weather[0].description }}</div>
+      </div>
     </div>
-    <div class="city text-block">Paris, FR</div>
-    <div class="date text-block">Thu, March 16, 2023</div>
+    <div class="city text-block">{{ weatherInfo?.name }}, {{ weatherInfo?.sys?.country }}</div>
+    <div class="date text-block">{{ today }}</div>
   </div>
 </template>
 
@@ -56,10 +76,24 @@
     background-position: 50% 50%
     background-size: contain
 
-.weather-desc
+//.weather-desc
+//
+//  &::before
+//    background-image: url('/src/assets/img/weather.svg')
 
-  &::before
-    background-image: url('/src/assets/img/weather.svg')
+.weather-desc
+  display: flex
+  align-items: center
+
+.weather-desc-img
+  width: 20px
+  height: 20px
+  background-repeat: no-repeat
+  background-size: contain
+
+.desc
+  padding-bottom: 0px
+  padding-left: 8px
 
 .city
 
